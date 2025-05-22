@@ -7,25 +7,70 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Persistent video header -->
+  <header class="video-header">
+    <video id="bgVideo" autoplay muted playsinline></video>
+    <div class="video-overlay"></div>
+  </header>
+
   <div class="container">
     <nav class="sidebar">
+      <img src="https://via.placeholder.com/150x80?text=Logo" alt="Logo" class="logo" />
       <h1>Dusk Creations</h1>
       <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Portfolio</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#" onclick="loadContent('home')">Home</a></li>
+        <li><a href="#" onclick="loadContent('portfolio')">Portfolio</a></li>
+        <li><a href="#" onclick="loadContent('about')">About</a></li>
+        <li><a href="#" onclick="loadContent('contact')">Contact</a></li>
       </ul>
     </nav>
-    <main class="gallery">
-      <!-- Placeholder images -->
-      <img src="https://via.placeholder.com/300" alt="Placeholder" />
-      <img src="https://via.placeholder.com/300" alt="Placeholder" />
-      <img src="https://via.placeholder.com/300" alt="Placeholder" />
-      <img src="https://via.placeholder.com/300" alt="Placeholder" />
-      <img src="https://via.placeholder.com/300" alt="Placeholder" />
-      <img src="https://via.placeholder.com/300" alt="Placeholder" />
+
+    <main id="main-content" class="gallery">
+      <!-- Content from home.html will be injected here -->
     </main>
   </div>
+
+<script>
+  const videos = [
+    'videos/video1.mp4',
+    'videos/video2.mp4',
+    'videos/video3.mp4'
+    // Add more here if needed
+  ];
+
+  let currentVideo = 0;
+  const videoElement = document.getElementById('bgVideo');
+  videoElement.playbackRate = 0.75;
+
+  function playNextVideo() {
+    videoElement.src = videos[currentVideo];
+    videoElement.load();
+    videoElement.play();
+    currentVideo = (currentVideo + 1) % videos.length;
+  }
+
+  // Play the first video on page load
+  playNextVideo();
+
+  // When a video ends, play the next one
+  videoElement.addEventListener('ended', playNextVideo);
+</script>
+
+
+  <script>
+  document.addEventListener('click', function (e) {
+    const clickedItem = e.target.closest('.grid-item');
+    if (!clickedItem) return;
+
+    // Remove expanded from any others
+    document.querySelectorAll('.grid-item').forEach(item => {
+      if (item !== clickedItem) item.classList.remove('expanded');
+    });
+
+    // Toggle the clicked item
+    clickedItem.classList.toggle('expanded');
+  });
+</script>
+
 </body>
 </html>
