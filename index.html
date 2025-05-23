@@ -55,22 +55,32 @@
 
   // When a video ends, play the next one
   videoElement.addEventListener('ended', playNextVideo);
-</script>
+function loadContent(page) {
+    fetch(`content/${page}.html`)
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('main-content').innerHTML = html;
 
+        // 👇 Re-attach any dynamic functionality (e.g. grid click)
+        attachImageGridBehavior();
+      });
+  }
 
-  <script>
-  document.addEventListener('click', function (e) {
-    const clickedItem = e.target.closest('.grid-item');
-    if (!clickedItem) return;
-
-    // Remove expanded from any others
-    document.querySelectorAll('.grid-item').forEach(item => {
-      if (item !== clickedItem) item.classList.remove('expanded');
+  // ✅ Make expand-on-click grid work after content loads
+  function attachImageGridBehavior() {
+    const gridItems = document.querySelectorAll('.grid-item');
+    gridItems.forEach(item => {
+      item.addEventListener('click', () => {
+        gridItems.forEach(i => {
+          if (i !== item) i.classList.remove('expanded');
+        });
+        item.classList.toggle('expanded');
+      });
     });
+  }
 
-    // Toggle the clicked item
-    clickedItem.classList.toggle('expanded');
-  });
+  // Initial load
+  window.onload = () => loadContent('home');
 </script>
 
 </body>
