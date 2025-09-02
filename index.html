@@ -18,10 +18,9 @@
       <img src="pics/logo.png" class="logo" />
       <h1>Dusk Creations</h1>
       <ul>
-        <li><a href="#" onclick="loadContent('home')">Home</a></li>
-        <li><a href="#" onclick="loadContent('portfolio')">Portfolio</a></li>
-        <li><a href="#" onclick="loadContent('about')">About</a></li>
-        <li><a href="#" onclick="loadContent('contact')">Contact</a></li>
+        <li><a href="#" onclick="loadContent('portfolio.html?v=' + Date.now());">Portfolio</a></li>
+        <li><a href="#" onclick="loadContent('about.html?v=' + Date.now());">About</a></li>
+        <li><a href="#" onclick="loadContent('contact.html?v=' + Date.now());">Contact</a></li>
       </ul>
     </nav>
 
@@ -30,58 +29,80 @@
     </main>
   </div>
 
-<script>
-  const videos = [
-    'videos/video1.mp4',
-    'videos/video2.mp4',
-    'videos/video3.mp4',
-    'videos/video4.mp4'
-    // Add more here if needed
-  ];
+  <script>
+    const videos = [
+      'videos/video1.mp4',
+      'videos/video2.mp4',
+      'videos/video3.mp4',
+      'videos/video4.mp4'
+    ];
 
-  let currentVideo = 0;
-  const videoElement = document.getElementById('bgVideo');
-  videoElement.playbackRate = 0.75;
+    let currentVideo = 0;
+    const videoElement = document.getElementById('bgVideo');
+    videoElement.playbackRate = 0.75;
 
-  function playNextVideo() {
-    videoElement.src = videos[currentVideo];
-    videoElement.load();
-    videoElement.play();
-    currentVideo = (currentVideo + 1) % videos.length;
-  }
+    function playNextVideo() {
+      videoElement.src = videos[currentVideo];
+      videoElement.load();
+      videoElement.play();
+      currentVideo = (currentVideo + 1) % videos.length;
+    }
 
-  // Play the first video on page load
-  playNextVideo();
+    videoElement.addEventListener('ended', playNextVideo);
+    playNextVideo();
 
-  // When a video ends, play the next one
-  videoElement.addEventListener('ended', playNextVideo);
-function loadContent(page) {
-    fetch(`content/${page}.html`)
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('main-content').innerHTML = html;
-
-        // 👇 Re-attach any dynamic functionality (e.g. grid click)
-        attachImageGridBehavior();
-      });
-  }
-
-  // ✅ Make expand-on-click grid work after content loads
-  function attachImageGridBehavior() {
-    const gridItems = document.querySelectorAll('.grid-item');
-    gridItems.forEach(item => {
-      item.addEventListener('click', () => {
-        gridItems.forEach(i => {
-          if (i !== item) i.classList.remove('expanded');
+    function loadContent(page) {
+      fetch(`${page}.html`)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('main-content').innerHTML = html;
+          attachImageGridBehavior();
         });
-        item.classList.toggle('expanded');
+    }
+
+    function attachImageGridBehavior() {
+      const gridItems = document.querySelectorAll('.grid-item');
+      gridItems.forEach(item => {
+        item.addEventListener('click', () => {
+          gridItems.forEach(i => {
+            if (i !== item) i.classList.remove('expanded');
+          });
+          item.classList.toggle('expanded');
+        });
       });
-    });
-  }
 
-  // Initial load
-  window.onload = () => loadContent('home');
-</script>
+      const materialButtons = document.querySelectorAll('#material-filters button');
+      const themeButtons = document.querySelectorAll('#theme-filters button');
 
+      function getActiveFilters(buttons) {
+        return Array.from(buttons)
+          .filter(btn => btn.classList.contains('active'))
+          .map(btn => btn.dataset.filter);
+      }
+
+      function filterGrid() {
+        const selectedMaterials = getActiveFilters(materialButtons);
+        const selectedThemes = getActiveFilters(themeButtons);
+        gridItems.forEach(item => {
+          const itemMaterial = item.dataset.material;
+          const itemTheme = item.dataset.theme;
+          const matchesMaterial = selectedMaterials.length === 0 || selectedMaterials.includes(itemMaterial);
+          const matchesTheme = selectedThemes.length === 0 || selectedThemes.includes(itemTheme);
+          item.style.display = (matchesMaterial && matchesTheme) ? 'block' : 'none';
+        });
+      }
+
+      [...materialButtons, ...themeButtons].forEach(button => {
+        button.addEventListener('click', () => {
+          button.classList.toggle('active');
+          filterGrid();
+        });
+      });
+
+      filterGrid();
+    }
+
+    window.onload = () => loadContent('portfolio');
+  </script>
 </body>
 </html>

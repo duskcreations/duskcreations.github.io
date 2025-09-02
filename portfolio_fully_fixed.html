@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: #12141c;
+      color: white;
+      font-family: sans-serif;
+    }
+    .filters {
+      padding: 1em;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5em;
+      background: #1e1e2f;
+      justify-content: center;
+    }
+    .filters button {
+      padding: 0.5em 1em;
+      border-radius: 20px;
+      border: none;
+      background: #444;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    .filters button.active {
+      background-color: #007acc !important;
+      color: white !important;
+      border: 2px solid white;
+      transform: scale(1.05);
+    }
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 10px;
+      padding: 1em;
+    }
+    .grid-item img {
+      width: 100%;
+      border-radius: 8px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center; color: white;">Dusk Creations Portfolio</h1>
+
+  <div class="filters">
+    <button data-filter="all" class="active">All</button>
+    <button data-filter="aluminium">Aluminium</button>
+    <button data-filter="acrylic">Acrylic</button>
+    <button data-filter="hardwood">Hardwood</button>
+    <button data-filter="steel">Steel</button>
+    <button data-filter="CNC">CNC</button>
+    <button data-filter="science">Science</button>
+    <button data-filter="gifts">Gifts</button>
+    <button data-filter="home">Home</button>
+  </div>
+
+  
+<div class="image-grid">
+  <div class="grid-item" data-material="hardwood" data-theme="gifts"><img src="pics/pic_1.jpg" alt="tic-tac-toe toy" /></div>
+  <div class="grid-item" data-material="hardwood" data-theme="gifts"><img src="pics/pic_2.jpg" alt="Dog's spot" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_3.jpg" alt="modular work holding" /></div>
+  <div class="grid-item" data-material="hardwood" data-theme="gifts"><img src="pics/pic_4.jpg" alt="tic-tac-toe toy" /></div>
+  <div class="grid-item" data-material="hardwood" data-theme="home"><img src="pics/pic_5.jpg" alt="Coat hangers" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_6.jpg" alt="Cooling block" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_7.jpg" alt="Microscope chamber" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_8.jpg" alt="Mould" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="CNC"><img src="pics/pic_9.jpg" alt="modular work holding" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_10.jpg" alt="lightsheet microscope inverted chamber" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_11.jpg" alt="filling the mould" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_12.jpg" alt="milling the mould" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_13.jpg" alt="mould parts" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_14.jpg" alt="mould center" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_15.jpg" alt="custom stage bracket" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_16.jpg" alt="Inverted lightsheet sample chamber" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_17.jpg" alt="Milling custom breadboard" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_18.jpg" alt="Milling custom breadboard" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="CNC"><img src="pics/pic_19.jpg" alt="workholding workholding" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="CNC"><img src="pics/pic_20.jpg" alt="workholding workholding" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_21.jpg" alt="engineered heart chambers" /></div>
+  <div class="grid-item" data-material="steel" data-theme="CNC"><img src="pics/pic_22.jpg" alt="low profile clamps" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_23.jpg" alt="engineered heart chamber base" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_24.jpg" alt="Dual illumination lightsheet sample chamber" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="CNC"><img src="pics/pic_25.jpg" alt="chips" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_26.jpg" alt="Dual illumination lightsheet stage" /></div>
+  <div class="grid-item" data-material="hardwood" data-theme="gifts"><img src="pics/pic_27.jpg" alt="door name gifts" /></div>
+</div>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const buttons = document.querySelectorAll(".filters button");
+      const items = document.querySelectorAll(".grid-item");
+
+      buttons.forEach(button => {
+        button.addEventListener("click", () => {
+          buttons.forEach(btn => btn.classList.remove("active"));
+          button.classList.add("active");
+
+          const filter = button.getAttribute("data-filter");
+
+          items.forEach(item => {
+            const material = item.getAttribute("data-material");
+            const theme = item.getAttribute("data-theme");
+
+            if (filter === "all" || material === filter || theme === filter) {
+              item.style.display = "block";
+            } else {
+              item.style.display = "none";
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

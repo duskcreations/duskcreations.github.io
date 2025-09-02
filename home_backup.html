@@ -1,0 +1,110 @@
+<!-- Filter Buttons -->
+<div class="filter-controls">
+  <div class="filter-group" id="material-filters">
+    <span class="filter-label">Material:</span>
+    <button data-filter="delrin">Delrin</button>
+    <button data-filter="acrylic">Acrylic</button>
+    <button data-filter="hardwood">Hardwood</button>
+    <button data-filter="aluminium">Aluminium</button>
+    <button data-filter="brass">Brass</button>
+    <button data-filter="steel">Steel</button>
+    <button data-filter="stainless">Stainless Steel</button>
+  </div>
+
+  <div class="filter-group" id="theme-filters">
+    <span class="filter-label">Theme:</span>
+    <button data-filter="science">Science</button>
+    <button data-filter="home">Home Decor</button>
+    <button data-filter="gifts">Gifts</button>
+    <button data-filter="CNC">CNC</button>
+  </div>
+</div>
+
+<!-- Image Grid with Tag Data -->
+<div class="image-grid">
+  <div class="grid-item" data-material="hardwood" data-theme="gifts"><img src="pics/pic_1.jpg" alt="tic-tac-toe toy" /></div>
+  <div class="grid-item" data-material="hardwood" data-theme="gifts"><img src="pics/pic_2.jpg" alt="Dog's spot" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_3.jpg" alt="modular work holding" /></div>
+  <div class="grid-item" data-material="hardwood" data-theme="gifts"><img src="pics/pic_4.jpg" alt="tic-tac-toe toy" /></div>
+  <div class="grid-item" data-material="hardwood" data-theme="home"><img src="pics/pic_5.jpg" alt="Coat hangers" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_6.jpg" alt="Cooling block" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_7.jpg" alt="Microscope chamber" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_8.jpg" alt="Mould" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="CNC"><img src="pics/pic_9.jpg" alt="modular work holding" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_10.jpg" alt="lightsheet microscope inverted chamber" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_11.jpg" alt="filling the mould" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_12.jpg" alt="milling the mould" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_13.jpg" alt="mould parts" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_14.jpg" alt="mould center" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_15.jpg" alt="custom stage bracket" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_16.jpg" alt="Inverted lightsheet sample chamber" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_17.jpg" alt="Milling custom breadboard" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_18.jpg" alt="Milling custom breadboard" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="CNC"><img src="pics/pic_19.jpg" alt="workholding workholding" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="CNC"><img src="pics/pic_20.jpg" alt="workholding workholding" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_21.jpg" alt="engineered heart chambers" /></div>
+  <div class="grid-item" data-material="steel" data-theme="CNC"><img src="pics/pic_22.jpg" alt="low profile clamps" /></div>
+  <div class="grid-item" data-material="acrylic" data-theme="science"><img src="pics/pic_23.jpg" alt="engineered heart chamber base" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_24.jpg" alt="Dual illumination lightsheet sample chamber" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="CNC"><img src="pics/pic_25.jpg" alt="chips" /></div>
+  <div class="grid-item" data-material="aluminium" data-theme="science"><img src="pics/pic_26.jpg" alt="Dual illumination lightsheet stage" /></div>
+  <div class="grid-item" data-material="hardwood" data-theme="gifts"><img src="pics/pic_27.jpg" alt="door name gifts" /></div>
+</div>
+
+<script>
+  function attachImageGridBehavior() {
+    const gridItems = document.querySelectorAll('.grid-item');
+
+    gridItems.forEach(item => {
+      item.addEventListener('click', () => {
+        gridItems.forEach(i => {
+          if (i !== item) i.classList.remove('expanded');
+        });
+        item.classList.toggle('expanded');
+      });
+    });
+
+    const materialButtons = document.querySelectorAll('#material-filters button');
+    const themeButtons = document.querySelectorAll('#theme-filters button');
+
+    function getActiveFilter(buttons) {
+      const active = Array.from(buttons).find(btn => btn.classList.contains('active'));
+      return active ? active.dataset.filter : null;
+    }
+
+    function filterGrid() {
+      const selectedMaterial = getActiveFilter(materialButtons);
+      const selectedTheme = getActiveFilter(themeButtons);
+
+      gridItems.forEach(item => {
+        const itemMaterial = item.dataset.material;
+        const itemTheme = item.dataset.theme;
+
+        const matchesMaterial = !selectedMaterial || itemMaterial === selectedMaterial;
+        const matchesTheme = !selectedTheme || itemTheme === selectedTheme;
+
+        item.style.display = (matchesMaterial && matchesTheme) ? 'block' : 'none';
+      });
+    }
+
+    materialButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        materialButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        filterGrid();
+      });
+    });
+
+    themeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        themeButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        filterGrid();
+      });
+    });
+
+    filterGrid();
+  }
+
+  attachImageGridBehavior();
+</script>
